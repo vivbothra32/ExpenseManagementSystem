@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -16,8 +17,13 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
+/**
+ * Employee entity 
+ * @author Vivek Bothra
+ * @version 1.0
+ */
 @Entity
+@Table(name = "employee")
 @NamedQuery(name = "byId", query = "SELECT emp FROM Employee emp WHERE emp.empId = :empId")
 @NamedQuery(name = "listAll", query = "SELECT emp FROM Employee emp")
 @NamedQuery(name = "delete", query = "DELETE FROM Employee emp WHERE emp.empId = :empId")
@@ -26,47 +32,35 @@ public class Employee {
 	
 	@Id
 	@Column(name = "emp_id")
-	//@NotNull(message = "Employee ID cannot be null")
-	//@Pattern(regexp="EE[A-Z0-9]{5}")
+	@NotNull(message = "Employee ID cannot be null")
+	@Pattern(regexp="EE[A-Z0-9]{5}")
 	private String empId;
 	
 	@Column(name = "emp_name", length = 15)
 	@NotNull(message = "Employee Name cannot be null")
-	//@Pattern(regexp="[A-Z][a-z]{3,}")
+	@Pattern(regexp="[A-Z][a-z]{3,}")
 	private String name;
 	
 	@Column(name = "emp_pan", length = 10)
 	@NotNull(message = "Employee PAN number cannot be null")
-	//@Pattern(regexp="[A-Z]{5}[0-9]{4}[A-Z]")
+	@Pattern(regexp="[A-Z]{5}[0-9]{4}[A-Z]")
 	private String pan;
 	
-	@Column(name = "emp_designation", length = 15)
+	@Column(name = "emp_designation", length = 125)
 	@NotNull(message = "Employee Designation cannot be null")
-	//@Pattern(regexp="[A-Z][0-9]{3}")
 	private String designation;
 	
-	@Column(name = "emp_domain", length = 15)
+	@Column(name = "emp_domain", length = 20)
 	@NotNull(message = "Employee Domain cannot be null")
-	//@Pattern(regexp="[A-Z][a-z]{4,}")
 	private String domain;
 	
-	@Column(name = "emp_doj")
-	//@NotNull(message = "Employee Date of Joining cannot be null. Enter dd-mm-yyyy format")
-	//@Pattern(regexp="^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-((19|2[0-9])[0-9]{2})$")
-	//@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = ISO.DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-	private Date dateOfJoining;
 	
 	@Column(name = "emp_dob")
-	//@NotNull(message = "Employee Date of Birth cannot be null. Enter dd-mm-yyyy format.")
-	//@Pattern(regexp="^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-((19|2[0-9])[0-9]{2})$")
-	//@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = ISO.DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date dateOfBirth;
 	
 	@Column(name = "emp_salary")
 	@NotNull(message = "Employee Salary cannot be null")
-	//@Pattern(regexp="[1-9][0-9]{5,}")
 	private double salary;
 	
 	@Column(name = "emp_email", length = 25)
@@ -140,13 +134,6 @@ public class Employee {
 		this.domain = domain;
 	}
 
-	public Date getDateOfJoining() {
-		return dateOfJoining;
-	}
-
-	public void setDateOfJoining(Date dateOfJoining) {
-		this.dateOfJoining = dateOfJoining;
-	}
 
 	public Date getDateOfBirth() {
 		return dateOfBirth;

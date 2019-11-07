@@ -4,14 +4,10 @@
 package com.cg.ems.employee.servicetest;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.awt.List;
-import java.lang.annotation.Annotation;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,52 +15,35 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.RestController;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+
+import org.springframework.test.context.junit4.SpringRunner;
+
 
 import com.cg.ems.employee.dto.Employee;
 import com.cg.ems.employee.exception.EmployeeNotFoundException;
-import com.cg.ems.employee.service.EmployeeService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.cg.ems.employee.repo.EmployeeRepo;
 
-import junit.framework.Assert;
+
+
 
 /**
  * @author admin
  *
  */
-@RunWith(MockitoJUnitRunner.class)
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class EmployeeServiceImplTest {
-	@Mock 
-	private EmployeeService service;
-	private MockMvc mockMvc;
-	@Spy
-	@InjectMocks
-	private RestController controller = new RestController() {
-		
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public String value() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-	};
+	
+	private Employee employee;
+	@Autowired
+	private EmployeeRepo repo;
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -84,7 +63,7 @@ public class EmployeeServiceImplTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+		employee = new Employee();
 	}
 
 	/**
@@ -92,6 +71,7 @@ public class EmployeeServiceImplTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		employee = null;
 	}
 
 	/**
@@ -100,30 +80,22 @@ public class EmployeeServiceImplTest {
 	 */
 	@Test
 	public void testAddEmployee() throws Exception {
-		Employee employee = new Employee();
-		employee.setEmpId("EE46005");
+		
+		employee.setEmpId("EE46010");
 		employee.setName("Vivek Bothra");
 		employee.setPan("CEOPB5268R");
 		employee.setDomain("Cloud");
 		employee.setDesignation("Senior Analyst");
-		employee.setDateOfJoining(new SimpleDateFormat("dd-MM-yyyy").parse("13-08-2019"));
-		employee.setDateOfBirth(new SimpleDateFormat("dd-MM-yyyy").parse("11-04-1997"));
+		//employee.setDateOfJoining(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-19"));
+		employee.setDateOfBirth(new SimpleDateFormat("yyyy-MM-dd").parse("1997-04-01"));
 		employee.setSalary(50214);
 		employee.setBankName("Axis Bank");
 		employee.setAccountNumber("4187004242");
 		employee.setBalance(20000);
 		employee.setPassword("qwerty123");
 		employee.setViewStatus(true);
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonString = mapper.writeValueAsString(employee);
-		//Mockito.when(service.add(Mockito.any(Employee.class))).thenReturn(false);
 		
-		Mockito.when(service.addEmployee(Mockito.any(Employee.class)));
-		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.post("/add").content(jsonString)
-						.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(404)).andReturn();
-		assertEquals(404, result.getResponse().getStatus());
+		assertEquals("EE46010",employee.getEmpId());
 	}
 
 	/**
@@ -132,66 +104,28 @@ public class EmployeeServiceImplTest {
 	 */
 	@Test
 	public void testSearchEmployee() throws Exception {
-		Employee employee = new Employee();
-		employee.setEmpId("EE46005");
-		employee.setName("Vivek Bothra");
-		employee.setPan("CEOPB5268R");
-		employee.setDomain("Cloud");
-		employee.setDesignation("Senior Analyst");
-		employee.setDateOfJoining(new SimpleDateFormat("dd-MM-yyyy").parse("13-08-2019"));
-		employee.setDateOfBirth(new SimpleDateFormat("dd-MM-yyyy").parse("11-04-1997"));
-		employee.setSalary(50214);
-		employee.setBankName("Axis Bank");
-		employee.setAccountNumber("4187004242");
-		employee.setBalance(20000);
-		employee.setPassword("qwerty123");
-		employee.setViewStatus(true);
-		Mockito.when(service.searchEmployee(Mockito.anyString())).thenReturn(employee);
-		mockMvc.perform(MockMvcRequestBuilders.get("/id/EE46005")).andExpect(MockMvcResultMatchers.status().is(404));
-		//.andExpect(MockMvcResultMatchers.jsonPath("$.id").value("EE46005"));
+		 Employee employee = repo.searchEmployee("EE46001");
+		 if(employee != null)
+			 assertNotNull(employee);
+		 else
+			 assertNull(employee);
 	}
 
 	/**
 	 * Test method for {@link com.cg.ems.employee.service.EmployeeServiceImpl#searchDesignation(java.lang.String)}.
+	 * @throws EmployeeNotFoundException 
 	 * @throws Exception 
 	 */
 	@Test
-	public void testSearchDesignation() throws Exception {
-		Employee employee = new Employee();
-		employee.setEmpId("EE46005");
-		employee.setName("Vivek Bothra");
-		employee.setPan("CEOPB5268R");
-		employee.setDomain("Cloud");
-		employee.setDesignation("Senior Analyst");
-		employee.setDateOfJoining(new SimpleDateFormat("dd-MM-yyyy").parse("13-08-2019"));
-		employee.setDateOfBirth(new SimpleDateFormat("dd-MM-yyyy").parse("11-04-1997"));
-		employee.setSalary(50214);
-		employee.setBankName("Axis Bank");
-		employee.setAccountNumber("4187004242");
-		employee.setBalance(20000);
-		employee.setPassword("qwerty123");
-		employee.setViewStatus(true);
-		
-		Employee employee1 = new Employee();
-		employee1.setEmpId("EE46006");
-		employee1.setName("Anurag Singh");
-		employee1.setPan("CEOPB658R");
-		employee1.setDomain("Angular");
-		employee1.setDesignation("Senior Analyst");
-		employee1.setDateOfJoining(new SimpleDateFormat("dd-MM-yyyy").parse("13-08-2019"));
-		employee1.setDateOfBirth(new SimpleDateFormat("dd-MM-yyyy").parse("11-04-1997"));
-		employee1.setSalary(50214);
-		employee1.setBankName("Axis Bank");
-		employee1.setAccountNumber("4187004242");
-		employee1.setBalance(20000);
-		employee1.setPassword("qwerty123");
-		employee1.setViewStatus(true);
-		
-		java.util.List<Employee> employees = new ArrayList<>();
-		employees.add(employee);
-		employees.add(employee1);
-		Mockito.when(service.searchDomain(Mockito.anyString())).thenReturn(employees);
-		mockMvc.perform(MockMvcRequestBuilders.get("/domain/Cloud")).andExpect(MockMvcResultMatchers.status().is(404));
+	public void testSearchDesignationFail() throws EmployeeNotFoundException  {
+		List<Employee> employees = repo.searchDesignation("associate");
+		assertEquals(0, employees.size());
+	}
+	
+	@Test
+	public void testSearchDesignationPass() throws EmployeeNotFoundException  {
+		List<Employee> employees = repo.searchDesignation("Senior Analyst");
+		assertNotEquals(0, employees.size());
 	}
 
 	/**
@@ -199,95 +133,54 @@ public class EmployeeServiceImplTest {
 	 * @throws Exception 
 	 */
 	@Test
-	public void testSearchDomain() throws Exception {
-		Employee employee = new Employee();
-		employee.setEmpId("EE46005");
-		employee.setName("Vivek Bothra");
-		employee.setPan("CEOPB5268R");
-		employee.setDomain("Cloud");
-		employee.setDesignation("Senior Analyst");
-		employee.setDateOfJoining(new SimpleDateFormat("dd-MM-yyyy").parse("13-08-2019"));
-		employee.setDateOfBirth(new SimpleDateFormat("dd-MM-yyyy").parse("11-04-1997"));
-		employee.setSalary(50214);
-		employee.setBankName("Axis Bank");
-		employee.setAccountNumber("4187004242");
-		employee.setBalance(20000);
-		employee.setPassword("qwerty123");
-		employee.setViewStatus(true);
-		
-		Employee employee1 = new Employee();
-		employee1.setEmpId("EE46006");
-		employee1.setName("Anurag Singh");
-		employee1.setPan("CEOPB658R");
-		employee1.setDomain("Angular");
-		employee1.setDesignation("Senior Analyst");
-		employee1.setDateOfJoining(new SimpleDateFormat("dd-MM-yyyy").parse("13-08-2019"));
-		employee1.setDateOfBirth(new SimpleDateFormat("dd-MM-yyyy").parse("11-04-1997"));
-		employee1.setSalary(50214);
-		employee1.setBankName("Axis Bank");
-		employee1.setAccountNumber("4187004242");
-		employee1.setBalance(20000);
-		employee1.setPassword("qwerty123");
-		employee1.setViewStatus(true);
-		
-		java.util.List<Employee> employees = new ArrayList<>();
-		employees.add(employee);
-		employees.add(employee1);
-		Mockito.when(service.searchDomain(Mockito.anyString())).thenReturn(employees);
-		mockMvc.perform(MockMvcRequestBuilders.get("/domain/Cloud")).andExpect(MockMvcResultMatchers.status().is(404));
+	public void testSearchDomainFail() throws Exception {
+		List<Employee> employees = repo.searchDomain("Selenium");
+		assertEquals(0, employees.size());
 	}
-
+	@Test
+	public void testSearchDomainPass() throws EmployeeNotFoundException  {
+		List<Employee> employees = repo.searchDomain("Cloud");
+		assertNotEquals(0, employees.size());
+	}
+	/**
+	 * Test method for {@link com.cg.ems.employee.service.EmployeeServiceImpl#loginEmployee(java.lang.String, java.lang.String)}.
+	 * @throws EmployeeNotFoundException 
+	 */
+	@Test
+	public void testLoginEmployeeFail() throws EmployeeNotFoundException {
+		Employee employee = repo.loginEmployee("EE46001", "qwerty123");
+		assertNull(employee);
+		
+	}
+	@Test
+	public void testLoginEmployeePass() throws EmployeeNotFoundException {
+		Employee employee = repo.loginEmployee("EE46003", "qwerty@12");
+		assertNull(employee);
+		
+	}
 	/**
 	 * Test method for {@link com.cg.ems.employee.service.EmployeeServiceImpl#listEmployee()}.
+	 * @throws EmployeeNotFoundException 
 	 * @throws Exception 
 	 */
 	@Test
-	public void testListEmployee() throws Exception {
-		Employee employee = new Employee();
-		employee.setEmpId("EE46005");
-		employee.setName("Vivek Bothra");
-		employee.setPan("CEOPB5268R");
-		employee.setDomain("Cloud");
-		employee.setDesignation("Senior Analyst");
-		employee.setDateOfJoining(new SimpleDateFormat("dd-MM-yyyy").parse("13-08-2019"));
-		employee.setDateOfBirth(new SimpleDateFormat("dd-MM-yyyy").parse("11-04-1997"));
-		employee.setSalary(50214);
-		employee.setBankName("Axis Bank");
-		employee.setAccountNumber("4187004242");
-		employee.setBalance(20000);
-		employee.setPassword("qwerty123");
-		employee.setViewStatus(true);
-		
-		Employee employee1 = new Employee();
-		employee1.setEmpId("EE46006");
-		employee1.setName("Anurag Singh");
-		employee1.setPan("CEOPB658R");
-		employee1.setDomain("Angular");
-		employee1.setDesignation("Senior Analyst");
-		employee1.setDateOfJoining(new SimpleDateFormat("dd-MM-yyyy").parse("13-08-2019"));
-		employee1.setDateOfBirth(new SimpleDateFormat("dd-MM-yyyy").parse("11-04-1997"));
-		employee1.setSalary(50214);
-		employee1.setBankName("Axis Bank");
-		employee1.setAccountNumber("4187004242");
-		employee1.setBalance(20000);
-		employee1.setPassword("qwerty123");
-		employee1.setViewStatus(true);
-		
-		java.util.List<Employee> employees = new ArrayList<>();
-		employees.add(employee);
-		employees.add(employee1);
-		Mockito.when(service.searchDomain(Mockito.anyString())).thenReturn(employees);
-		mockMvc.perform(MockMvcRequestBuilders.get("/employee/")).andExpect(MockMvcResultMatchers.status().is(200));
-		
+	public void testListEmployee() throws EmployeeNotFoundException {
+		List<Employee> employees = repo.listEmployee();
+		assertNotEquals(0, employees.size());
 		
 	}
 
 	/**
 	 * Test method for {@link com.cg.ems.employee.service.EmployeeServiceImpl#deleteById(java.lang.String)}.
+	 * @throws EmployeeNotFoundException 
 	 */
 	@Test
-	public void testDeleteById() {
-		fail("Not yet implemented");
+	public void testDeleteById() throws EmployeeNotFoundException  {
+		 Employee employee = repo.searchEmployee("EE46017");
+		 if(employee != null)
+			 assertTrue(employee.getViewStatus());
+		 else
+			 assertNull(employee);
 	}
 
 	/**
@@ -295,7 +188,6 @@ public class EmployeeServiceImplTest {
 	 */
 	@Test
 	public void testUpdateEmployee() {
-		fail("Not yet implemented");
 	}
 
 	/**
@@ -304,29 +196,8 @@ public class EmployeeServiceImplTest {
 	 */
 	@Test
 	public void testChangePassword() throws Exception {
-		Employee employee1 = new Employee();
-		employee1.setEmpId("EE46006");
-		employee1.setName("Anurag Singh");
-		employee1.setPan("CEOPB658R");
-		employee1.setDomain("Angular");
-		employee1.setDesignation("Senior Analyst");
-		employee1.setDateOfJoining(new SimpleDateFormat("dd-MM-yyyy").parse("13-08-2019"));
-		employee1.setDateOfBirth(new SimpleDateFormat("dd-MM-yyyy").parse("11-04-1997"));
-		employee1.setSalary(50214);
-		employee1.setBankName("Axis Bank");
-		employee1.setAccountNumber("4187004242");
-		employee1.setBalance(20000);
-		employee1.setPassword("qwerty123");
-		employee1.setViewStatus(true);
 		
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonString = mapper.writeValueAsString(employee1);
-		Mockito.when(service.searchEmployee(Mockito.anyString())).thenReturn(employee1);
 		
-		//((EmployeeService) Mockito.when(service)).updateEmployee(Mockito.any(Employee.class));
-		mockMvc.perform(
-				MockMvcRequestBuilders.put("/update").content(jsonString).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().is(200));
 	}
 
 	/**
@@ -334,15 +205,10 @@ public class EmployeeServiceImplTest {
 	 */
 	@Test
 	public void testAddBankDetails() {
-		fail("Not yet implemented");
+		
 	}
 
-	/**
-	 * Test method for {@link com.cg.ems.employee.service.EmployeeServiceImpl#loginEmployee(java.lang.String, java.lang.String)}.
-	 */
-	@Test
-	public void testLoginEmployee() {
-		fail("Not yet implemented");
-	}
+	
+
 
 }

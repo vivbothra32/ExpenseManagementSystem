@@ -1,5 +1,10 @@
 package com.cg.ems.employee.exception;
 
+/**
+ * Custom Exception - PasswordNotMatchedException
+ * @author Vivek Bothra
+ * @version 1.0
+ */
 public class PasswordNotMatchedException extends Exception {
 
 	public PasswordNotMatchedException() {

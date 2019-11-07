@@ -16,13 +16,22 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-
+/**
+ * RestexceptionHandler Class
+ * @author Vivek Bothra
+ * @version 1.0
+ */
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 @RestController
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	
+	/**
+	 * 
+	 * @param EmployeeNotFoundException ex
+	 * @return ResponseEntity<Object>
+	 */
 	@ExceptionHandler(EmployeeNotFoundException.class)
 	@ResponseBody
 	public ResponseEntity<Object> handleInvalidMovie(EmployeeNotFoundException ex){
@@ -31,6 +40,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		
 	}
 	
+	/**
+	 * Function to display custom message of exception when exception gets thrown
+	 */
 	@Override
 	@ResponseBody
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
