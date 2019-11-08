@@ -1,6 +1,7 @@
 package com.cg.ems.employee.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -42,7 +43,7 @@ import com.cg.ems.employee.service.EmployeeService;
  * @author Vivek Bothra
  * @version 1.0
  */
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4201","http://localhost:4205" })
 @RestController
 @RequestMapping("/employee")
 @Validated
@@ -82,16 +83,18 @@ public class EmployeeController {
 	 * @param empId
 	 * @return Employee
 	 */
-	@GetMapping(value = "/id/{empId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Employee searchEmployee(@PathVariable String empId) {
+	@GetMapping(value = "/empId", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Employee> searchEmployee(@RequestParam String empId) {
 		logger.info("searching employee by id");
+		Employee emp = new Employee();
 		try {
 			logger.info("Employee found");
-			return service.searchEmployee(empId);
+			emp = service.searchEmployee(empId);
+			return new ResponseEntity<Employee>(emp, HttpStatus.OK);
 		} catch (EmployeeNotFoundException ex) {
 			logger.error("Employee not found");
 			System.out.println(ex.getMessage());
-			return null;
+			return new ResponseEntity("Employee of id = "+empId+"not found", HttpStatus.BAD_REQUEST);
 		}
 	}
 	/**
@@ -100,35 +103,45 @@ public class EmployeeController {
 	 * @return List<Employee>
 	 * @throws EmployeeNotFoundException
 	 */
-	@GetMapping(value = "/designation/{designation}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Employee> searchDesigation(@PathVariable String designation)   {
+	@GetMapping(value = "/designation", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Employee>> searchDesigation(@RequestParam String designation)   {
 		logger.info("searching employee by designation");
+		List<Employee> employees ;
 		try {
 			logger.info("Employees found");
-			return service.searchDesignation(designation);
+			employees = service.searchDesignation(designation);
+			if(employees.size()==0 || employees == null)
+				return new ResponseEntity("Employee of designation = "+designation+"not found", HttpStatus.BAD_REQUEST);
+			else
+				return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
 		} catch (EmployeeNotFoundException ex) {
 			logger.error("Employees not found");
 			System.out.println(ex.getMessage());
-			return null;
+			return new ResponseEntity("Employee of entered designation not found", HttpStatus.BAD_REQUEST);
+			
 		}
 	}
 	
-	/**
+	/** 
 	 * Function to display employees of a particular domain
 	 * @param domain
 	 * @return List<Employee>
 	 * @throws EmployeeNotFoundException
 	 */
-	@GetMapping(value = "/domain/{domain}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Employee> searchDomain(@PathVariable String domain)   {
+	@GetMapping(value = "/domain", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Employee>> searchDomain(@RequestParam String domain)   {
 		logger.info("searching employee by domain");
+		List<Employee> employees ;
 		try {
 			logger.info("Employees found");
-			return service.searchDomain(domain);
+			employees = service.searchDomain(domain);
+			if(employees.size()==0 || employees == null)
+				return new ResponseEntity("Employee of domain = "+domain+"not found", HttpStatus.BAD_REQUEST);
+			else
+				return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
 		} catch (EmployeeNotFoundException ex) {
 			logger.error("Employees not found");
-			System.out.println(ex.getMessage());
-			return null;
+			return new ResponseEntity("Employee of entered domain not found", HttpStatus.BAD_REQUEST);
 		}
 	}
 	
