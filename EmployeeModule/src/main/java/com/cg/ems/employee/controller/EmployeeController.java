@@ -280,9 +280,22 @@ public class EmployeeController {
 	 * @return Employee object
 	 * @throws EmployeeNotFoundException
 	 */
-	@PutMapping(value = "/delete/{empId}", produces = MediaType.APPLICATION_JSON_VALUE )
-	public Employee deleteById(@PathVariable String empId)    {
-		return deleteById(empId);
+	@GetMapping(value = "/delete")
+	public ResponseEntity<String> deleteById(@RequestParam("empId") String empId) {
+		//Employee emp = service.searchEmployee(empId);
+		logger.info("In deleteById method of controller");
+		try {
+			boolean flag = service.deleteById(empId);
+			if(flag != true){
+				logger.info("Deleted succesfully");
+				return new ResponseEntity<String>("Deleted successfully",HttpStatus.BAD_REQUEST);
+			}else {
+				logger.error("Employees not deleted");
+				return new ResponseEntity<String>("Not deleted.",HttpStatus.OK);
+			}
+		} catch (EmployeeNotFoundException e) {
+			return new ResponseEntity<String>("Not deleted.",HttpStatus.BAD_REQUEST);
+		}
 		
 	}
 

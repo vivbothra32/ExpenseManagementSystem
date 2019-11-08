@@ -21,7 +21,7 @@ public interface EmployeeRepo extends JpaRepository<Employee , String>{
 	/**
 	 * Function to search employee by id from the database.
 	 * @param empId
-	 * @return
+	 * @return AND emp.viewStatus = TRUE
 	 * @throws EmployeeNotFoundException
 	 */
 	@Query("SELECT emp FROM Employee emp WHERE emp.empId = :empId AND emp.viewStatus = TRUE")
@@ -47,7 +47,7 @@ public interface EmployeeRepo extends JpaRepository<Employee , String>{
 	
 	/**
 	 * Function to fetch all employees from database whose viewStatus is true
-	 * @return
+	 * @return  
 	 * @throws EmployeeNotFoundException
 	 */
 	@Query("SELECT emp FROM Employee emp WHERE emp.viewStatus = TRUE")
@@ -64,7 +64,7 @@ public interface EmployeeRepo extends JpaRepository<Employee , String>{
 	 * Function to authenticate user credentials - empId and password.
 	 * @param empId
 	 * @param password
-	 * @return
+	 * @return  AND emp.viewStatus = TRUE
 	 * @throws EmployeeNotFoundException
 	 */
 	@Query("SELECT emp FROM Employee emp WHERE emp.empId = :empId AND emp.password = :password AND emp.viewStatus = TRUE")

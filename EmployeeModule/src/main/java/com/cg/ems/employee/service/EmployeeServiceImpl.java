@@ -142,7 +142,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 		Employee employee = repo.searchEmployee(empId);
 		if( employee == null) {
 			logger.error("Object not retrieved from repo. Employees not deleted");
-			throw new EmployeeNotFoundException("Employee to be deleted not found.");
+			//throw new EmployeeNotFoundException("Employee to be deleted not found.");
+			return false;
 		}
 		else {
 			logger.info("object retrieved from repo. Employees found and deleted.");
