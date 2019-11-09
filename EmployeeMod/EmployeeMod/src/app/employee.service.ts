@@ -2,11 +2,33 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Employee } from './model/employee';
+import { ExpenseClaimModel } from './model/ExpenseClaim';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
+
+  addExpenseClaim(claims:ExpenseClaimModel){
+    return this.http.post<ExpenseClaimModel>("http://localhost:9004/ems/claim/addclaim",claims);
+    }
+    getEmployee(empId:String){
+      return this.http.get<Employee>("http://localhost:9004/ems/employee/"+empId);
+    }
+  getExpenseCode(){
+    return this.http.get<number[]>("http://localhost:9004/ems/expense");
+  }
+
+  getFinanceCode(){
+    return this.http.get<number[]>("http://localhost:9004/ems/finance");
+  }
+
+  getProjectCode(){
+    return this.http.get<number[]>("http://localhost:9004/ems/project");
+  }
+  updateExpenseClaim(claims:ExpenseClaimModel){
+    return this.http.put<ExpenseClaimModel>("http://localhost:9004/ems/claim/modifyclaim",claims);
+    }
  
   flag : boolean = false;
   employee : Employee;
@@ -35,15 +57,16 @@ export class EmployeeService {
 
     return this.http.post<Employee>(this.baseUrl+'/add', form);
   }
-  updateEmployee(employee: Employee) {
+  updateEmployee(pan: String, designation : String, domain : String, salary : number) {
     let form=new FormData();
         form.append("empId", sessionStorage.getItem('empId'));
-        form.append("pan", String(employee.pan));
-        form.append("designation", String(employee.designation));
-        form.append("domain", String(employee.domain));
-        form.append("salary", String(employee.salary))
-
-    return this.http.put<Employee>(this.baseUrl+"/update", form);
+        form.append("pan", String(pan));
+        form.append("designation", String(designation));
+        form.append("domain", String(domain));
+        form.append("salary", String(salary))
+        console.log(form);
+        console.log(sessionStorage.getItem('empId'));
+    return this.http.get<Employee>(this.baseUrl+'/update?empId='+sessionStorage.getItem('empId')+"&pan="+pan+"&designation="+designation+"&domain="+domain+"&salary="+salary);
   }
   deleteId(empId: string) : Observable<string> {
     console.log(empId);
@@ -63,13 +86,13 @@ export class EmployeeService {
   searchDesignation(designation : String):Observable<Employee[]>{
     return this.http.get<Employee[]>(this.baseUrl+"/designation?designation="+designation);
   }
-  loginEmployee(empId : string, password : string):Observable<any>{
+  loginEmployee(empId : string, password : string):Observable<Employee>{
     //let form = new FormData();
     //form.append("empId",empId);
     //form.append("password",password);
     console.log("in service angular");
 
-    return this.http.get(this.baseUrl+"/login/?empId="+empId+"&password="+password);
+    return this.http.get<Employee>(this.baseUrl+"/login/?empId="+empId+"&password="+password);
   }
   listEmployee() {
     return this.http.get<Employee[]>(this.baseUrl+"/");

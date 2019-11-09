@@ -1,0 +1,58 @@
+<div class="container">
+    <h2>Add Trainer details</h2>
+    <form (ngSubmit)="addTrainer()" #addForm="ngForm">
+      <table class="table table-hover">
+        <tr>
+        <td width="15%">Name:</td>
+        <td>
+        <input type="text" placeholder="Enter Name" [(ngModel)]=addNewTrainer.name name="name" #name=ngModel required pattern="[A-Za-z]{5,}" class="form-control" id="name">
+        <span *ngIf="name.touched && name.invalid && (name.errors.required || name.errors.pattern)" class="alert-warning">
+          Invalid name or name cannot be empty!
+        </span>
+        </td></tr>
+
+        <tr>
+          <td>City:</td>
+          <td><select [(ngModel)]="addNewTrainer.city" name="city" #city=ngModel required class="form-control">
+            <option *ngFor="let a of cities" [value]="a">{{a}}</option>
+          </select>
+          <span *ngIf="city.touched && city.invalid && city.errors.required" class="alert-warning">
+            Please enter correct city!
+          </span>
+        </td></tr>
+
+        <tr>
+          <td>Branch:</td>
+          <td><select [(ngModel)]="addNewTrainer.branch" name="branch" #branch=ngModel required class="form-control">
+            <option *ngFor="let a of branches" [value]="a">{{a}}</option>
+          </select>
+          <span *ngIf="branch.touched && branch.invalid && branch.errors.required" class="alert-warning">
+            Please enter correct branch!
+          </span>
+        </td></tr>
+
+        <tr>
+        <td>Phone Number:</td>
+        <td><input type="number" placeholder="Enter mobile number" [(ngModel)]=addNewTrainer.mobile name="phone" #mobile=ngModel required pattern="[7-9][0-9]{9}" class="form-control" id="phone">
+        <span *ngIf="mobile.touched && mobile.invalid && (mobile.errors.required || mobile.errors.pattern)" class="alert-warning">
+          Invalid Moile No. or mobile no cannot be empty!
+        </span>
+        </td></tr>
+
+        <tr>
+        <td>Email id:</td>
+        <td><input type="email" placeholder="Enter mail id" [(ngModel)]=addNewTrainer.mail name="mail" #email=ngModel required pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$" class="form-control" id="mail">
+        <span *ngIf="email.touched && email.invalid && (email.errors.required || email.errors.pattern)" class="alert-warning">
+          Invalid email id or email cannot be empty!
+        </span>
+        </td></tr>
+      <tr><td colspan="2" align="center">  
+      <button type="submit" [disabled]="!addForm.valid" class="btn btn-info">Add Customer</button>
+      </td></tr>
+      </table>
+    </form>
+  </div>
+
+
+
+  

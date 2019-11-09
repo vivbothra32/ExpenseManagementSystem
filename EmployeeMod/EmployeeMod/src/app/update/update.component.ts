@@ -16,6 +16,7 @@ export class UpdateComponent implements OnInit {
   pan : string;
   domain : string;
   designation : string;
+  salary : number;
   employees : Employee[];
   //employees : Observable<Employee[]>;
   emp : Observable<Employee>;
@@ -28,7 +29,9 @@ export class UpdateComponent implements OnInit {
   }
   updateEmployee(){
     this.employee.empId = sessionStorage.getItem('empId');
-    this.employeeService.updateEmployee(this.employee).subscribe(data => {
+    console.log(this.employee);
+    console.log(this.employee.empId);
+    this.employeeService.updateEmployee(this.pan, this.designation, this.domain, this.salary).subscribe(data => {
       this.employee = data;
       //this.employees = this.employee;
       if(this.employee.empId == null){

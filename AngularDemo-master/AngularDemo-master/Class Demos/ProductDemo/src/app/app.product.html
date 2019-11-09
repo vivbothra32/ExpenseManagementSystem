@@ -1,0 +1,56 @@
+<h1>Add Product</h1>
+<table>
+    <tr>
+        <td>Product Id</td>
+        <td><input type = "number" [(ngModel)]="prodId"/></td>
+    </tr>
+    <tr>
+        <td>Product Name</td>
+        <td><input type = "text" [(ngModel)]="prodName"/></td>
+    </tr>
+    <tr>
+        <td>Product Cost</td>
+        <td><input type = "number" [(ngModel)]="prodCost"/></td>
+    </tr>
+    <tr>
+        <td *ngIf = "prodId"><input type = "button" value="Add Product" (click) = "addProduct()"></td>
+    </tr>
+</table>
+<h1>Show Products</h1>
+
+<table border = 2px>
+    <tr>
+        <th>Product Id</th>
+        <th>Product Name</th>
+        <th>Product Cost</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    <tr *ngFor="let pro of products">
+        <td>{{pro.prodId}}</td>
+        <td>{{pro.prodName}}</td>
+        <td>{{pro.prodCost}}</td>
+        <td><input type = "button" value = "Update" (click) = "updateProduct(pro)" /></td>
+        <td><input type = "button" value = "Delete" (click) = "deleteProduct(pro)" /></td>
+    </tr>
+</table>
+<div *ngIf = "update">
+    <h1>Update Product</h1>
+    <table>
+        <tr>
+            <td>Product Id</td>
+            <td><input type = "number" [(ngModel)]="update.prodId" readonly/></td>
+        </tr>
+        <tr>
+            <td>Product Name</td>
+            <td><input type = "text" [(ngModel)]="update.prodName"/></td>
+        </tr>
+        <tr>
+            <td>Product Cost</td>
+            <td><input type = "number" [(ngModel)]="update.prodCost"/></td>
+        </tr>
+        <tr>
+            <td><input type = "button" value="Update Product" (click) = "updateProductSubmit()"></td>
+        </tr>
+    </table>
+</div>

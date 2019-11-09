@@ -41,15 +41,15 @@
                 <tr>
                     <td width="25%">PAN Number : </td>
                     <td>
-                    <input type="text" placeholder="Enter PAN" [(ngModel)]="employee.pan" name="pan" #pan=ngModel focused = false required pattern="[A-Z]{5}[0-9]{4}[A-Z]" class="form-control" id="pan" required>
-                    <!--<span *ngIf="pan.touched && pan.invalid && (pan.errors.required || pan.errors.pattern)" class="alert-warning">
+                    <input type="text" placeholder="Enter PAN" [(ngModel)]=pan name="panId" #panId=ngModel focused = false required pattern="[A-Z]{5}[0-9]{4}[A-Z]" class="form-control" id="pan" required>
+                    <span *ngIf="panId.touched && panId.invalid && (panId.errors.required || panId.errors.pattern)" class="alert-warning">
                       Invalid PAN or name cannot be empty!
-                    </span>-->
+                    </span>
                     </td>
                   </tr>
                   <tr>
                     <td width="25%">Designation : </td>
-                    <td><select [(ngModel)]="employee.designation" name="designation" #city=ngModel required class="form-control">
+                    <td><select [(ngModel)]=designation name=desig #desig=ngModel required class="form-control">
                       <option disabled selected>--Select--</option>
                       <option *ngFor="let a of designations" >{{a}}</option>
                     </select>
@@ -57,7 +57,7 @@
                 
                   <tr>
                     <td width="25%">Domain : </td>
-                    <td><select [(ngModel)]="employee.domain" name="domain" #domain=ngModel required class="form-control">
+                    <td><select [(ngModel)]=domain name=dom #dom=ngModel required class="form-control">
                       <option disabled selected>--Select--</option>
                       <option *ngFor="let domain of domains" >{{domain}}</option>
                     </select>
@@ -65,7 +65,7 @@
                   <tr>
                       <td width="25%">Salary : </td>
                       <td>
-                      <input type="number" placeholder="Enter Salary" [(ngModel)]="employee.salary" name="salary" #salary=ngModel focused = false required pattern = "[1-9][0-9]{4,6}" class="form-control" id="salary" required>
+                      <input type="number" placeholder="Enter Salary" [(ngModel)]=salary name="sal" #sal=ngModel focused = false required pattern = "[1-9][0-9]{4,6}" class="form-control" id="salary" required>
                       </td>
                     </tr>
                 <tr><td colspan="2" align ="center">  

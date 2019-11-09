@@ -1,0 +1,50 @@
+<form (ngSubmit)="searchTrainerByCity()" #addForm="ngForm">
+    <div class="form group">
+      <label>Enter City Name</label><br>
+      <input required type="text" [(ngModel)]=cityName name="cityName" #cityname=ngModel><br><br> 
+      <span *ngIf="cityname.touched && cityname.invalid && (cityname.errors.required)" class="alert-warning">
+        Invalid cityname or cityname cannot be empty!
+      </span>
+    </div>
+    <div class="form group">
+      <button name="citySearch" type="submit" [disabled]="!addForm.valid" class="btn btn-info">Search Trainer</button>
+    </div>
+</form>
+
+<form (ngSubmit)="searchTrainerByBranch()" #newForm="ngForm">
+    <div class="form group">
+      <label>Enter Branch Name</label><br>
+      <input required type="text" [(ngModel)]=branchName name="branchName" #branchname=ngModel><br><br> 
+      <span *ngIf="branchname.touched && branchname.invalid && (branchname.errors.required)" class="alert-warning">
+        Invalid branch name or branch name cannot be empty!
+      </span>
+    </div>
+    <div class="form group">
+      <button name="branchSearch" type="submit" [disabled]="!newForm.valid" class="btn btn-info">Search Trainer</button>
+    </div>
+</form>
+
+  <div [hidden]="!found">
+  <table class="table table-striped table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">City</th>
+          <th scope="col">Branch</th>
+          <th scope="col">Mobile no.</th>
+          <th scope="col">Mail Id</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tra of trainers; let i=index">
+          <th>{{tra.name}}</th>
+          <th>{{tra.city}}</th>
+          <th>{{tra.branch}}</th>
+          <th>{{tra.mobile}}</th>
+          <th>{{tra.mail}}</th>
+          <td><button class="btn btn-warning" (click)="delete(i)">Delete Customer</button></td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+  

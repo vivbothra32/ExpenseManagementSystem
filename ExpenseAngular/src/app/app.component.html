@@ -1,0 +1,23 @@
+<h1 style="text-align: center">Expense Management System</h1>
+<nav class="navbar navbar-dark bg-primary" style="background-color: #c5e7ff;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a *ngIf="!flag" class="navbar-brand" href="http://localhost:4200">EMS</a>
+    </div>
+    <div>
+      <ul class="nav navbar-nav">
+        <li><a [routerLink]="['home']">Expense</a></li>
+        <li *ngIf="!flag"><a [routerLink]="['login']">Login</a></li>
+        <li *ngIf="flag"><a [routerLink]="['add']">Add An Expense</a></li>
+        <li *ngIf="flag"><a [routerLink]="['search']">Find An Expense</a></li>
+        <li *ngIf="flag"><a [routerLink]="['list']">List All Expenses</a></li>
+        <li *ngIf="flag"><a [routerLink]="['modify']">Modify An Expense</a></li>
+        <li *ngIf="flag"><a [routerLink]="['delete']">Delete An Expense</a></li>
+        <li *ngIf="flag"><a [routerLink]="['logout']" >Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid">
+  <router-outlet></router-outlet>
+</div>

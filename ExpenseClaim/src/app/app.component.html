@@ -1,0 +1,21 @@
+<h1 style="text-align: center" >Expense Management System</h1>
+<body style="background-color: whitesmoke">
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand">ExpenseClaim Service</a>
+    </div>
+    <ul class="nav navbar-nav">
+      
+        <li><a [routerLink]="['expenseclaim']">ExpenseClaim</a></li>
+        <li><a [routerLink]="['list']">List Claim</a></li>
+        <li><a [routerLink]="['update']">Update Claim</a></li>
+        <li><a [routerLink]="['delete']">Delete Claim</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container-fluid">
+  <router-outlet></router-outlet>
+</div>
+</body>
+

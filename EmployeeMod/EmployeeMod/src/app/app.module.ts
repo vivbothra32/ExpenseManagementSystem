@@ -18,6 +18,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { LogoutComponent } from './logout/logout.component';
 import { UpdateComponent } from './update/update.component';
 import { ListComponent } from './list/list.component';
+import { HomeComponent } from './home/home.component';
+import { ApplyClaimComponent } from './apply-claim/apply-claim.component';
+import { ModifyClaimComponent } from './modify-claim/modify-claim.component';
 
 
 @NgModule({
@@ -31,6 +34,9 @@ import { ListComponent } from './list/list.component';
     LogoutComponent,
     UpdateComponent,
     ListComponent,
+    HomeComponent,
+    ApplyClaimComponent,
+    ModifyClaimComponent,
   
   ],
   imports: [
