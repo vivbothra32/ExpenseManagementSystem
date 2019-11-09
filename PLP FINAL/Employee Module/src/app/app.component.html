@@ -1,0 +1,27 @@
+<h1 style="text-align: center">Expense Management System</h1>
+<nav class="navbar navbar-dark bg-primary" style="background-color: #c5e7ff;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a *ngIf = "!flag" class="navbar-brand" href="http://localhost:4200">EMS</a>
+    </div>
+    <ul class="nav navbar-nav">
+        <li><a [routerLink]="['home']">Employee Service</a></li>
+        <li *ngIf = "!flag"><a [routerLink]="['register']">Register</a></li>
+        <li *ngIf = "!flag"><a [routerLink]="['login']">Login</a></li>
+        <!--<li *ngIf = "flag"><a [routerLink]="['update']">Update Details</a></li>-->
+        <!--<li *ngIf = "flag"><a [routerLink]="['list']">List Employee</a></li> -->
+        <li *ngIf = "flag"><a [routerLink]="['search']">Search Employee</a></li>
+        <li *ngIf = "flag"><a [routerLink]="['bank']">Bank Details</a></li> 
+        <li *ngIf = "flag"><a [routerLink]="['password']">Change Password</a></li>
+        <li *ngIf = "flag"><a [routerLink]="['applyClaim']">Apply Claim</a></li>
+        <li *ngIf = "flag"><a [routerLink]="['modifyClaim']">Modify Claim</a></li>
+        <li *ngIf = "flag"><a [routerLink]="['logout']">Logout</a></li>
+        <!--<li *ngIf = "flag"><a>Welcome, {{employee.name}}</a></li>-->
+    </ul>
+  </div>
+</nav>
+<div class="container-fluid">
+  <router-outlet></router-outlet>
+</div>
+
+
